@@ -10,11 +10,15 @@
 ;; Use 4 spaces for indentation
 (setq tab-width 4)
 
+;;Prevent welcome screen
+(setq inhibit-startup-screen t)
+
 ;;Open these files on startup
 (find-file "f:/MCSD/Programming in CSharp/MCSD Certification Code and Test Questions/06/Chapter6_code/612095c06src")
 
-;;Prevent welcome screen
-(setq inhibit-startup-screen t)
+;; Switch to the 'scratch' buffer on startup, instead of the above directory
+(custom-set-variables
+ '(initial-buffer-choice t))
 
 (savehist-mode 1) ;; Save mini-buffer history
 
