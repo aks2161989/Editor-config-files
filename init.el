@@ -13,12 +13,18 @@
 ;;Prevent welcome screen
 (setq inhibit-startup-screen t)
 
+;; By default, the 'scratch' buffer displays the text ";; This buffer is for text that is not saved, and for Lisp evaluation.
+;; To create a file, visit it with C-x C-f and enter text in its buffer."
+;; Do not display this text
+(setq initial-scratch-message "")
+
 ;;Open these files on startup
 (find-file "f:/MCSD/Programming in CSharp/MCSD Certification Code and Test Questions/06/Chapter6_code/612095c06src")
 
 ;; Switch to the 'scratch' buffer on startup, instead of the above directory
 (custom-set-variables
  '(initial-buffer-choice t))
+
 
 (savehist-mode 1) ;; Save mini-buffer history
 
