@@ -25,7 +25,6 @@
 (custom-set-variables
  '(initial-buffer-choice t))
 
-
 (savehist-mode 1) ;; Save mini-buffer history
 
 ;; Make dired use of msys' ls program
@@ -76,25 +75,23 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages (quote (csharp-mode))))
 
-;; Set Font and font size
-(set-face-attribute 'default nil :font "Courier New-14")
+;; Select a desirable font-size, frame position and frame size when Emacs starts up
+(defun originalPosition ()
+  (interactive)
+  (set-frame-font "Courier New-14" t t)
+  (set-frame-position (selected-frame) 100 50)
+  (when window-system (set-frame-size (selected-frame) 82 28))
+  )
+(originalPosition)
+;; Code for Emacs startup position & size ends here
 
-;; Prevent lower border from extending below window frame
-(defconst frame-default-top      0  "The 'top'  position property of a frame.")
-(defconst frame-default-left     0  "The 'left' position property of a frame.")
-(defconst frame-default-height  30  "The default frame height.")
-(defconst frame-default-width  78  "The default frame width.")
-
-(add-to-list 'default-frame-alist (cons 'left   frame-default-left))
-(add-to-list 'default-frame-alist (cons 'top    frame-default-top))
-(add-to-list 'default-frame-alist (cons 'height frame-default-height))
-(add-to-list 'default-frame-alist (cons 'width  frame-default-width))
-
-(add-to-list 'initial-frame-alist (cons 'left   frame-default-left))
-(add-to-list 'initial-frame-alist (cons 'top    frame-default-top))
-(add-to-list 'initial-frame-alist (cons 'height frame-default-height))
-(add-to-list 'initial-frame-alist (cons 'width  frame-default-width))
-;; Lower border code ends here
+;; Resize and move Emacs to the right side
+(defun  moveRight ()
+  (interactive)
+    (when window-system (set-frame-size (selected-frame) 42 28))
+    (set-frame-position (selected-frame) 859 0)
+      )
+;; Resize and move right code ends here
 
 ;; Display total number of lines in Emacs modeline
 (defvar my-mode-line-buffer-line-count nil)
