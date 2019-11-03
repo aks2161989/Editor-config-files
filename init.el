@@ -23,9 +23,18 @@
 
 ;; Switch to the 'scratch' buffer on startup, instead of the above directory
 (custom-set-variables
- '(initial-buffer-choice t))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ecb-options-version "2.50")
+ '(initial-buffer-choice t)
+ '(package-selected-packages (quote (ecb company omnisharp csharp-mode)))
+ '(speedbar-show-unknown-files t))
 
-(savehist-mode 1) ;; Save mini-buffer history
+
+;; Save mini-buffer history
+(savehist-mode 1) 
 
 ;; Make dired use of msys' ls program
 ;;(setq ls-lisp-use-insert-directory-program t) ;; use external ls
@@ -54,6 +63,23 @@
    t))
 ;; load package code ends here
 
+;; Set the omnisharp-server-executable-path when omnisharp-roslyn is extracted manually
+(setq omnisharp-server-executable-path "F:\\omnisharp-win-x86\\OmniSharp.exe")
+;; Set the omnisharp-server-executable-path code ends here
+
+;; Add this to csharp-mode-hook to your init.el to automatically invoke omnisharp-emacs when opening C# files:
+(add-hook 'csharp-mode-hook 'omnisharp-mode)
+
+;; For autocompletion via company mode to work you will also need this in your init.el:
+(eval-after-load
+ 'company
+ '(add-to-list 'company-backends 'company-omnisharp))
+
+(add-hook 'csharp-mode-hook #'company-mode)
+
+;;omnisharp-emacs supports Flycheck and it can be enabled automatically by hooking up flycheck-mode to be enabled for csharp-mode buffers:
+(add-hook 'csharp-mode-hook #'flycheck-mode)
+
 ;; required for evil mode
 ;;(package-initialize)
 ;;(evil-mode 1)        ;; enable evil-mode
@@ -68,13 +94,6 @@
 (add-hook 'csharp-mode-hook 'my-csharp-mode-hook)
 ;; electric-pair-mode code ends here
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (csharp-mode))))
-
 ;; Select a desirable font-size, frame position and frame size when Emacs starts up
 (defun originalPosition ()
   (interactive)
@@ -88,10 +107,18 @@
 ;; Resize and move Emacs to the right side
 (defun  moveRight ()
   (interactive)
-    (when window-system (set-frame-size (selected-frame) 42 28))
+    (when window-system (set-frame-size (selected-frame) 42 30))
     (set-frame-position (selected-frame) 859 0)
       )
 ;; Resize and move right code ends here
+
+;; Resize and move Emacs to the top
+(defun  moveTop ()
+  (interactive)
+    (when window-system (set-frame-size (selected-frame) 120 14))
+    (set-frame-position (selected-frame) 0 0)
+      )
+;; Resize and move top code ends here
 
 ;; Display total number of lines in Emacs modeline
 (defvar my-mode-line-buffer-line-count nil)
@@ -144,9 +171,7 @@
 ;; Launch in browser code ends here
 
 ;; speedbar shows all types of files, not only directories
-(custom-set-variables
- '(speedbar-show-unknown-files t)
-)
+
 ;; speedbar show-files code ends here
 
 ;; Macro to select all text in buffer and copy it
@@ -157,3 +182,11 @@
 ;; Bind F5 to 'copyAll' macro defined above
 (global-set-key (kbd "<f5>") 'copyAll)
 ;; Bind F5 to 'copyAll' ends here
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
