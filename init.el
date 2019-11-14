@@ -215,7 +215,7 @@
 
 ;; Bind M-(up) to the scroll-up-one-line-macro defined above
 (global-set-key (kbd "<M-up>") 'scroll-up-one-line-macro)
-;; Bind M-(down) to scroll-up-one-line-macro ends here
+;; Bind M-(up) to scroll-up-one-line-macro ends here
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
