@@ -32,7 +32,6 @@
  '(package-selected-packages (quote (ecb company omnisharp csharp-mode)))
  '(speedbar-show-unknown-files t))
 
-
 ;; Save mini-buffer history
 (savehist-mode 1) 
 
@@ -104,6 +103,10 @@
 (originalPosition)
 ;; Code for Emacs startup position & size ends here
 
+;; Change the default block cursor to a bar
+;;(setq-default cursor-type 'bar)
+;; Change cursor to bar code ends here
+
 ;; Resize and move Emacs to the right side
 (defun  moveRight ()
   (interactive)
@@ -146,6 +149,19 @@
 (add-hook 'dired-after-readin-hook 'my-mode-line-count-lines)
 ;; Display total number of lines code ends here
 
+;; Hide newline symbols when word wrap is turned on
+(setf (cdr (assq 'continuation fringe-indicator-alist))
+      '(nil nil) ;; no continuation indicators
+      ;; '(nil right-curly-arrow) ;; right indicator only
+      ;; '(left-curly-arrow nil) ;; left indicator only
+      ;; '(left-curly-arrow right-curly-arrow) ;; default
+      )
+;; Hide newline symbols code ends here
+
+;; Do not split words in half when word wrap is turned on
+(global-visual-line-mode t)
+;; Prevent word splitting code ends here
+
 ;; Run C++ programs directly from within Emacs
 (defun execute-cpp-program ()
   (interactive)
@@ -182,6 +198,24 @@
 ;; Bind F5 to 'copyAll' macro defined above
 (global-set-key (kbd "<f5>") 'copyAll)
 ;; Bind F5 to 'copyAll' ends here
+
+;; Macro to scroll down one line at a time
+(fset 'scroll-down-one-line-macro
+   "\C-u1\C-v")
+;; Macro to scroll down one line at a time ends here
+
+;; Bind M-(down) to the scroll-down-one-line-macro defined above
+(global-set-key (kbd "<M-down>") 'scroll-down-one-line-macro)
+;; Bind M-(down) to scroll-down-one-line-macro ends here
+
+;; Macro to scroll up one line at a time
+(fset 'scroll-up-one-line-macro
+   "\C-u1\366")
+;; Macro to scroll up one line at a time code ends here
+
+;; Bind M-(up) to the scroll-up-one-line-macro defined above
+(global-set-key (kbd "<M-up>") 'scroll-up-one-line-macro)
+;; Bind M-(down) to scroll-up-one-line-macro ends here
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
