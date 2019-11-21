@@ -18,6 +18,21 @@
 ;; Do not display this text
 (setq initial-scratch-message "")
 
+;; Open files at last-edited position
+(save-place-mode 1)
+;; Open files at last-edited position code ends here
+
+;; Setting up spell check with hunspell
+;; Code taken from https://emacs.stackexchange.com/a/22311/18512
+(setq ispell-program-name "F:/hunspell-1.3.2-3-w32-bin/bin/hunspell.exe")
+;; "en_US" is key to lookup in `ispell-local-dictionary-alist`.
+;; Please note it will be passed as default value to hunspell CLI `-d` option
+;; if you don't manually setup `-d` in `ispell-local-dictionary-alist`
+(setq ispell-local-dictionary "en_US") 
+(setq ispell-local-dictionary-alist
+      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
+;; Setting up spell-check code ends here
+
 ;;Open these files on startup
 (find-file "f:/MCSD/Programming in CSharp/MCSD Certification Code and Test Questions/06/Chapter6_code/612095c06src")
 
@@ -93,15 +108,28 @@
 (add-hook 'csharp-mode-hook 'my-csharp-mode-hook)
 ;; electric-pair-mode code ends here
 
-;; Select a desirable font-size, frame position and frame size when Emacs starts up
+;; A function to restore the startup font type & size, frame position & size...   
+;; ...I have set in the default-frame-alist code below
+;; This function can be  used to restore the defaults when the frame is...
+;; ...deliberately resized and needs to be brought back to its initial size/font
 (defun originalPosition ()
   (interactive)
   (set-frame-font "Courier New-14" t t)
   (set-frame-position (selected-frame) 100 50)
   (when window-system (set-frame-size (selected-frame) 82 28))
   )
-(originalPosition)
-;; Code for Emacs startup position & size ends here
+;;(originalPosition)
+;; Code to restore Emacs to startup font and frame parameters ends here
+
+;; My desired font type & size, frame position & size for ALL Emacs frames
+;; Same settings as originalPosition function above
+;; These settings work for ALL Emacs frames, even when running emacsclientsw.exe
+(add-to-list 'default-frame-alist '(font . "Courier New-14")) ;; Font type & size
+(add-to-list 'default-frame-alist '(top . 50)) ;; Vertical frame position
+(add-to-list 'default-frame-alist '(left . 100)) ;; Horizontal frame position
+(add-to-list 'default-frame-alist '(height . 28)) ;; Vertical frame size
+(add-to-list 'default-frame-alist '(width . 82)) ;; Horizontal frame size
+;; Code to set Emacs to my desired font & frame parameters ends here
 
 ;; Change the default block cursor to a bar
 ;;(setq-default cursor-type 'bar)
