@@ -121,6 +121,10 @@
 ;;(originalPosition)
 ;; Code to restore Emacs to startup font and frame parameters ends here
 
+;; Code to bind originalPosition to the key sequence "C-c o p"
+(global-set-key (kbd "C-c o p") 'originalPosition)
+;; Code to bind originalPosition to the key sequence "C-c o p" ends here
+
 ;; My desired font type & size, frame position & size for ALL Emacs frames
 ;; Same settings as originalPosition function above
 ;; These settings work for ALL Emacs frames, even when running emacsclientsw.exe
@@ -143,6 +147,10 @@
       )
 ;; Resize and move right code ends here
 
+;; Code to bind moveRight to the key sequence "C-c m r"
+(global-set-key (kbd "C-c m r") 'moveRight)
+;; Code to bind moveRight to the key sequence "C-c m r" ends here
+
 ;; Resize and move Emacs to the top
 (defun  moveTop ()
   (interactive)
@@ -150,6 +158,10 @@
     (set-frame-position (selected-frame) 0 0)
       )
 ;; Resize and move top code ends here
+
+;; Code to bind moveTop to the key sequence "C-c m t"
+(global-set-key (kbd "C-c m t") 'moveTop)
+;; Code to bind moveTop to the key sequence "C-c m t" ends here
 
 ;; Display total number of lines in Emacs modeline
 (defvar my-mode-line-buffer-line-count nil)
