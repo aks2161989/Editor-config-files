@@ -121,9 +121,12 @@
 ;;(originalPosition)
 ;; Code to restore Emacs to startup font and frame parameters ends here
 
-;; Code to bind originalPosition to the key sequence "C-c o p"
+;; Code to bind originalPosition to the following key sequences 
 (global-set-key (kbd "C-c o p") 'originalPosition)
-;; Code to bind originalPosition to the key sequence "C-c o p" ends here
+(global-set-key (kbd "C-c m o") 'originalPosition)
+(global-set-key (kbd "C-c i p") 'originalPosition)
+(global-set-key (kbd "C-c m i") 'originalPosition)
+;; Code to bind originalPosition to key sequences ends here
 
 ;; My desired font type & size, frame position & size for ALL Emacs frames
 ;; Same settings as originalPosition function above
