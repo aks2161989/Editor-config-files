@@ -108,15 +108,88 @@
 (add-hook 'csharp-mode-hook 'my-csharp-mode-hook)
 ;; electric-pair-mode code ends here
 
+;; Declare and define custom variables
+(defcustom my-selected-font "Arial-14"
+  "My default font type and size"
+  :type 'string)
+(defcustom my-x-frame-pos 100
+  "My default horizontal frame position (x)"
+  :type 'integer)
+(defcustom my-y-frame-pos 50
+  "My default vertical frame position (y)"
+  :type 'integer)
+(defcustom my-frame-width 82
+  "My default horizontal frame size"
+  :type 'integer)
+(defcustom my-frame-height 28
+  "My default vertical frame size"
+  :type 'integer)
+(defcustom my-x-frame-pos-moveRight 859
+  "The horizontal frame position (x) for moveRight function"
+  :type 'integer)
+(defcustom my-y-frame-pos-moveRight 0
+  "The vertical frame position (y) for moveRight function"
+  :type 'integer)
+(defcustom my-frame-width-moveRight 42
+  "The frame width for moveRight function"
+  :type 'integer)
+(defcustom my-frame-height-moveRight 30
+  "The frame height for moveRight function"
+  :type 'integer)
+(defcustom my-x-frame-pos-moveTop 0
+  "The horizontal frame position (x) for moveTop function"
+  :type 'integer)
+(defcustom my-y-frame-pos-moveTop 0
+  "The vertical frame position (y) for moveTop function"
+  :type 'integer)
+(defcustom my-frame-width-moveTop 120
+  "The frame width for moveTop function"
+  :type 'integer)
+(defcustom my-frame-height-moveTop 14
+  "The frame height for moveTop function"
+  :type 'integer)
+;; Declare and define custom variables code ends here
+
+;; Modify custom variables based on font selected
+(cond ((equal my-selected-font "Courier New-14")
+       (setq my-x-frame-pos 100)
+       (setq my-y-frame-pos 50)
+       (setq my-frame-width 82)
+       (setq my-frame-height 28)
+       (setq my-x-frame-pos-moveRight 859)
+       (setq my-y-frame-pos-moveRight 0)
+       (setq my-frame-width-moveRight 42)
+       (setq my-frame-height-moveRight 30)
+       (setq my-x-frame-pos-moveTop 0)
+       (setq my-y-frame-pos-moveTop 0)
+       (setq my-frame-width-moveTop 120)
+       (setq my-frame-height-moveTop 14))
+
+      ((equal my-selected-font "Arial-14")
+       (setq my-x-frame-pos 100)
+       (setq my-y-frame-pos 15)
+       (setq my-frame-width 100)
+       (setq my-frame-height 28)
+       (setq my-x-frame-pos-moveRight 960)
+       (setq my-y-frame-pos-moveRight 0)
+       (setq my-frame-width-moveRight 45)
+       (setq my-frame-height-moveRight 29)
+       (setq my-x-frame-pos-moveTop 0)
+       (setq my-y-frame-pos-moveTop 0)
+       (setq my-frame-width-moveTop 165)
+       (setq my-frame-height-moveTop 14))
+      )
+;; Modify custom variables based on font selected code ends here
+
 ;; A function to restore the startup font type & size, frame position & size...   
 ;; ...I have set in the default-frame-alist code below
 ;; This function can be  used to restore the defaults when the frame is...
 ;; ...deliberately resized and needs to be brought back to its initial size/font
 (defun originalPosition ()
   (interactive)
-  (set-frame-font "Courier New-14" t t)
-  (set-frame-position (selected-frame) 100 50)
-  (when window-system (set-frame-size (selected-frame) 82 28))
+;;  (set-frame-font "Courier New-14" t t)
+  (set-frame-position (selected-frame) my-x-frame-pos my-y-frame-pos)
+  (when window-system (set-frame-size (selected-frame) my-frame-width my-frame-height))
   )
 ;;(originalPosition)
 ;; Code to restore Emacs to startup font and frame parameters ends here
@@ -131,11 +204,11 @@
 ;; My desired font type & size, frame position & size for ALL Emacs frames
 ;; Same settings as originalPosition function above
 ;; These settings work for ALL Emacs frames, even when running emacsclientsw.exe
-(add-to-list 'default-frame-alist '(font . "Courier New-14")) ;; Font type & size
-(add-to-list 'default-frame-alist '(top . 50)) ;; Vertical frame position
-(add-to-list 'default-frame-alist '(left . 100)) ;; Horizontal frame position
-(add-to-list 'default-frame-alist '(height . 28)) ;; Vertical frame size
-(add-to-list 'default-frame-alist '(width . 82)) ;; Horizontal frame size
+(add-to-list 'default-frame-alist `(font . ,my-selected-font)) ;; Font type & size
+(add-to-list 'default-frame-alist `(top . ,my-y-frame-pos)) ;; Vertical frame position
+(add-to-list 'default-frame-alist `(left . ,my-x-frame-pos)) ;; Horizontal frame position
+(add-to-list 'default-frame-alist `(height . ,my-frame-height)) ;; Vertical frame size
+(add-to-list 'default-frame-alist `(width . ,my-frame-width)) ;; Horizontal frame size
 ;; Code to set Emacs to my desired font & frame parameters ends here
 
 ;; Change the default block cursor to a bar
@@ -145,8 +218,8 @@
 ;; Resize and move Emacs to the right side
 (defun  moveRight ()
   (interactive)
-    (when window-system (set-frame-size (selected-frame) 42 30))
-    (set-frame-position (selected-frame) 859 0)
+    (when window-system (set-frame-size (selected-frame) my-frame-width-moveRight my-frame-height-moveRight))
+    (set-frame-position (selected-frame) my-x-frame-pos-moveRight my-y-frame-pos-moveRight)
       )
 ;; Resize and move right code ends here
 
@@ -157,8 +230,8 @@
 ;; Resize and move Emacs to the top
 (defun  moveTop ()
   (interactive)
-    (when window-system (set-frame-size (selected-frame) 120 14))
-    (set-frame-position (selected-frame) 0 0)
+    (when window-system (set-frame-size (selected-frame) my-frame-width-moveTop my-frame-height-moveTop))
+    (set-frame-position (selected-frame) my-x-frame-pos-moveTop my-y-frame-pos-moveTop)
       )
 ;; Resize and move top code ends here
 
@@ -266,4 +339,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
