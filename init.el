@@ -109,43 +109,43 @@
 ;; electric-pair-mode code ends here
 
 ;; Declare and define custom variables
-(defcustom my-selected-font "Arial-14"
+(defcustom my-selected-font "Arial-14" ;; Select Font Type And Size Here
   "My default font type and size"
   :type 'string)
-(defcustom my-x-frame-pos 100
+(defcustom my-x-frame-pos nil
   "My default horizontal frame position (x)"
   :type 'integer)
-(defcustom my-y-frame-pos 50
+(defcustom my-y-frame-pos nil
   "My default vertical frame position (y)"
   :type 'integer)
-(defcustom my-frame-width 82
+(defcustom my-frame-width nil
   "My default horizontal frame size"
   :type 'integer)
-(defcustom my-frame-height 28
+(defcustom my-frame-height nil
   "My default vertical frame size"
   :type 'integer)
-(defcustom my-x-frame-pos-moveRight 859
+(defcustom my-x-frame-pos-moveRight nil
   "The horizontal frame position (x) for moveRight function"
   :type 'integer)
-(defcustom my-y-frame-pos-moveRight 0
+(defcustom my-y-frame-pos-moveRight nil
   "The vertical frame position (y) for moveRight function"
   :type 'integer)
-(defcustom my-frame-width-moveRight 42
+(defcustom my-frame-width-moveRight nil
   "The frame width for moveRight function"
   :type 'integer)
-(defcustom my-frame-height-moveRight 30
+(defcustom my-frame-height-moveRight nil
   "The frame height for moveRight function"
   :type 'integer)
-(defcustom my-x-frame-pos-moveTop 0
+(defcustom my-x-frame-pos-moveTop nil
   "The horizontal frame position (x) for moveTop function"
   :type 'integer)
-(defcustom my-y-frame-pos-moveTop 0
+(defcustom my-y-frame-pos-moveTop nil
   "The vertical frame position (y) for moveTop function"
   :type 'integer)
-(defcustom my-frame-width-moveTop 120
+(defcustom my-frame-width-moveTop nil
   "The frame width for moveTop function"
   :type 'integer)
-(defcustom my-frame-height-moveTop 14
+(defcustom my-frame-height-moveTop nil
   "The frame height for moveTop function"
   :type 'integer)
 ;; Declare and define custom variables code ends here
