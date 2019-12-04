@@ -109,7 +109,7 @@
 ;; electric-pair-mode code ends here
 
 ;; Declare and define custom variables
-(defcustom my-selected-font "Arial-14" ;; Select Font Type And Size Here
+(defcustom my-selected-font "Courier New-14" ;; Select Font Type And Size Here
   "My default font type and size"
   :type 'string)
 (defcustom my-x-frame-pos nil
@@ -148,6 +148,18 @@
 (defcustom my-frame-height-moveTop nil
   "The frame height for moveTop function"
   :type 'integer)
+(defcustom my-x-frame-pos-moveBottom nil
+  "The horizontal frame position (x) for moveBottom function"
+  :type 'integer)
+(defcustom my-y-frame-pos-moveBottom nil
+  "The vertical frame position (y) for moveBottom function"
+  :type 'integer)
+(defcustom my-frame-width-moveBottom nil
+  "The frame width for moveBottom function"
+  :type 'integer)
+(defcustom my-frame-height-moveBottom nil
+  "The frame height for moveBottom function"
+  :type 'integer)
 ;; Declare and define custom variables code ends here
 
 ;; Modify custom variables based on font selected
@@ -163,7 +175,11 @@
        (setq my-x-frame-pos-moveTop 0)
        (setq my-y-frame-pos-moveTop 0)
        (setq my-frame-width-moveTop 120)
-       (setq my-frame-height-moveTop 14))
+       (setq my-frame-height-moveTop 14)
+       (setq my-x-frame-pos-moveBottom my-x-frame-pos-moveTop)
+       (setq my-y-frame-pos-moveBottom 345)
+       (setq my-frame-width-moveBottom my-frame-width-moveTop)
+       (setq my-frame-height-moveBottom my-frame-height-moveTop))
 
       ((equal my-selected-font "Arial-14")
        (setq my-x-frame-pos 100)
@@ -177,7 +193,11 @@
        (setq my-x-frame-pos-moveTop 0)
        (setq my-y-frame-pos-moveTop 0)
        (setq my-frame-width-moveTop 165)
-       (setq my-frame-height-moveTop 14))
+       (setq my-frame-height-moveTop 14)
+       (setq my-x-frame-pos-moveBottom my-x-frame-pos-moveTop)
+       (setq my-y-frame-pos-moveBottom 328)
+       (setq my-frame-width-moveBottom my-frame-width-moveTop)
+       (setq my-frame-height-moveBottom my-frame-height-moveTop))
       )
 ;; Modify custom variables based on font selected code ends here
 
@@ -238,6 +258,18 @@
 ;; Code to bind moveTop to the key sequence "C-c m t"
 (global-set-key (kbd "C-c m t") 'moveTop)
 ;; Code to bind moveTop to the key sequence "C-c m t" ends here
+
+;; Resize and move Emacs to the bottom
+(defun  moveBottom ()
+  (interactive)
+    (when window-system (set-frame-size (selected-frame) my-frame-width-moveBottom my-frame-height-moveBottom))
+    (set-frame-position (selected-frame) my-x-frame-pos-moveBottom my-y-frame-pos-moveBottom)
+      )
+;; Resize and move bottom code ends here
+
+;; Code to bind moveBottom to the key sequence "C-c m b"
+(global-set-key (kbd "C-c m b") 'moveBottom)
+;; Code to bind moveBottom to the key sequence "C-c m b" ends here
 
 ;; Display total number of lines in Emacs modeline
 (defvar my-mode-line-buffer-line-count nil)
