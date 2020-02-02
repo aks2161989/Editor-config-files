@@ -34,7 +34,7 @@
 ;; Setting up spell-check code ends here
 
 ;;Open these files on startup
-(find-file "f:/MCSD/Programming in CSharp/MCSD Certification Code and Test Questions/06/Chapter6_code/612095c06src")
+;; (find-file "f:/MCSD/Programming in CSharp/MCSD Certification Code and Test Questions/06/Chapter6_code/612095c06src")
 
 ;; Switch to the 'scratch' buffer on startup, instead of the above directory
 (custom-set-variables
@@ -44,8 +44,10 @@
  ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.50")
  '(initial-buffer-choice t)
- '(package-selected-packages (quote (ecb company omnisharp csharp-mode)))
+ '(package-selected-packages (quote (company omnisharp csharp-mode)))
  '(speedbar-show-unknown-files t))
+
+
 
 ;; Save mini-buffer history
 (savehist-mode 1) 
@@ -63,8 +65,8 @@
   "Return current-buffer if current buffer is not the *mini-buffer*
   else return buffer before minibuf is activated."
   (if (not (window-minibuffer-p)) (current-buffer)
-      (if (eq (get-lru-window) (next-window))
-          (window-buffer (previous-window)) (window-buffer (next-window)))))
+    (if (eq (get-lru-window) (next-window))
+	(window-buffer (previous-window)) (window-buffer (next-window)))))
 ;; Get filename code ends here
 
 ;; load emacs 24's package system. Add MELPA repository.
@@ -86,8 +88,8 @@
 
 ;; For autocompletion via company mode to work you will also need this in your init.el:
 (eval-after-load
- 'company
- '(add-to-list 'company-backends 'company-omnisharp))
+    'company
+  '(add-to-list 'company-backends 'company-omnisharp))
 
 (add-hook 'csharp-mode-hook #'company-mode)
 
@@ -109,7 +111,7 @@
 ;; electric-pair-mode code ends here
 
 ;; Declare and define custom variables
-(defcustom my-selected-font "Courier New-14" ;; Select Font Type And Size Here
+(defcustom my-selected-font "Consolas-14" ;; Select Font Type And Size Here
   "My default font type and size"
   :type 'string)
 (defcustom my-x-frame-pos nil
@@ -165,7 +167,7 @@
 ;; Modify custom variables based on font selected
 (cond ((equal my-selected-font "Courier New-14")
        (setq my-x-frame-pos 100)
-       (setq my-y-frame-pos 50)
+       (setq my-y-frame-pos 20)
        (setq my-frame-width 82)
        (setq my-frame-height 28)
        (setq my-x-frame-pos-moveRight 859)
@@ -198,6 +200,24 @@
        (setq my-y-frame-pos-moveBottom 328)
        (setq my-frame-width-moveBottom my-frame-width-moveTop)
        (setq my-frame-height-moveBottom my-frame-height-moveTop))
+
+      ((equal my-selected-font "Consolas-14")
+       (setq my-x-frame-pos 100)
+       (setq my-y-frame-pos 20)
+       (setq my-frame-width 82)
+       (setq my-frame-height 28)
+       (setq my-x-frame-pos-moveRight 900)
+       (setq my-y-frame-pos-moveRight 0)
+       (setq my-frame-width-moveRight 42)
+       (setq my-frame-height-moveRight 29)
+       (setq my-x-frame-pos-moveTop 0)
+       (setq my-y-frame-pos-moveTop 0)
+       (setq my-frame-width-moveTop 132)
+       (setq my-frame-height-moveTop 13)
+       (setq my-x-frame-pos-moveBottom my-x-frame-pos-moveTop)
+       (setq my-y-frame-pos-moveBottom 352)
+       (setq my-frame-width-moveBottom my-frame-width-moveTop)
+       (setq my-frame-height-moveBottom my-frame-height-moveTop))
       )
 ;; Modify custom variables based on font selected code ends here
 
@@ -207,7 +227,7 @@
 ;; ...deliberately resized and needs to be brought back to its initial size/font
 (defun originalPosition ()
   (interactive)
-;;  (set-frame-font "Courier New-14" t t)
+  ;;  (set-frame-font "Courier New-14" t t)
   (set-frame-position (selected-frame) my-x-frame-pos my-y-frame-pos)
   (when window-system (set-frame-size (selected-frame) my-frame-width my-frame-height))
   )
@@ -238,9 +258,9 @@
 ;; Resize and move Emacs to the right side
 (defun  moveRight ()
   (interactive)
-    (when window-system (set-frame-size (selected-frame) my-frame-width-moveRight my-frame-height-moveRight))
-    (set-frame-position (selected-frame) my-x-frame-pos-moveRight my-y-frame-pos-moveRight)
-      )
+  (when window-system (set-frame-size (selected-frame) my-frame-width-moveRight my-frame-height-moveRight))
+  (set-frame-position (selected-frame) my-x-frame-pos-moveRight my-y-frame-pos-moveRight)
+  )
 ;; Resize and move right code ends here
 
 ;; Code to bind moveRight to the key sequence "C-c m r"
@@ -250,9 +270,9 @@
 ;; Resize and move Emacs to the top
 (defun  moveTop ()
   (interactive)
-    (when window-system (set-frame-size (selected-frame) my-frame-width-moveTop my-frame-height-moveTop))
-    (set-frame-position (selected-frame) my-x-frame-pos-moveTop my-y-frame-pos-moveTop)
-      )
+  (when window-system (set-frame-size (selected-frame) my-frame-width-moveTop my-frame-height-moveTop))
+  (set-frame-position (selected-frame) my-x-frame-pos-moveTop my-y-frame-pos-moveTop)
+  )
 ;; Resize and move top code ends here
 
 ;; Code to bind moveTop to the key sequence "C-c m t"
@@ -262,9 +282,9 @@
 ;; Resize and move Emacs to the bottom
 (defun  moveBottom ()
   (interactive)
-    (when window-system (set-frame-size (selected-frame) my-frame-width-moveBottom my-frame-height-moveBottom))
-    (set-frame-position (selected-frame) my-x-frame-pos-moveBottom my-y-frame-pos-moveBottom)
-      )
+  (when window-system (set-frame-size (selected-frame) my-frame-width-moveBottom my-frame-height-moveBottom))
+  (set-frame-position (selected-frame) my-x-frame-pos-moveBottom my-y-frame-pos-moveBottom)
+  )
 ;; Resize and move bottom code ends here
 
 ;; Code to bind moveBottom to the key sequence "C-c m b"
@@ -334,13 +354,9 @@
 	(async-shell-command (concat "start chrome.exe \"file://" filename "\"")))))
 ;; Launch in browser code ends here
 
-;; speedbar shows all types of files, not only directories
-
-;; speedbar show-files code ends here
-
 ;; Macro to select all text in buffer and copy it
 (fset 'copyAll
-   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("h\367" 0 "%d")) arg)))
+      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ("h\367" 0 "%d")) arg)))
 ;; Macro ENDS HERE
 
 ;; Bind F5 to 'copyAll' macro defined above
@@ -349,7 +365,7 @@
 
 ;; Macro to scroll down one line at a time
 (fset 'scroll-down-one-line-macro
-   "\C-u1\C-v")
+      "\C-u1\C-v")
 ;; Macro to scroll down one line at a time ends here
 
 ;; Bind M-(down) to the scroll-down-one-line-macro defined above
@@ -358,12 +374,29 @@
 
 ;; Macro to scroll up one line at a time
 (fset 'scroll-up-one-line-macro
-   "\C-u1\366")
+      "\C-u1\366")
 ;; Macro to scroll up one line at a time code ends here
 
 ;; Bind M-(up) to the scroll-up-one-line-macro defined above
 (global-set-key (kbd "<M-up>") 'scroll-up-one-line-macro)
 ;; Bind M-(up) to scroll-up-one-line-macro ends here
+
+(setq path-to-ctags "H:/ctags-2020-01-12_feffe43a-x64/ctags.exe") ;; <- your ctags path here
+
+;; Invoke universal ctags with ‘m-x create-tags’
+(defun create-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "%s -f TAGS -e -R %s" path-to-ctags (directory-file-name dir-name)))
+  )
+;; Invoke ctags with ‘m-x create-tags’ code ends here
+
+;; ‘font-lock-mode-hook’ is run after entering a major mode. You can make use of this to add an Imenu index to the menu bar in any mode that supports Imenu:
+(defun try-to-add-imenu ()
+  (condition-case nil (imenu-add-to-menubar "MyImenuIndex") (error nil)))
+(add-hook 'font-lock-mode-hook 'try-to-add-imenu)
+;; Add Imenu index code ends here
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
