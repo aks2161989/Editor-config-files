@@ -111,7 +111,7 @@
 ;; electric-pair-mode code ends here
 
 ;; Declare and define custom variables
-(defcustom my-selected-font "Consolas-14" ;; Select Font Type And Size Here
+(defcustom my-selected-font "Consolas-14:bold" ;; Select Font Type And Size Here
   "My default font type and size"
   :type 'string)
 (defcustom my-x-frame-pos nil
@@ -201,7 +201,7 @@
        (setq my-frame-width-moveBottom my-frame-width-moveTop)
        (setq my-frame-height-moveBottom my-frame-height-moveTop))
 
-      ((equal my-selected-font "Consolas-14")
+      ((or (equal my-selected-font "Consolas-14")(equal my-selected-font "Consolas-14:bold"))
        (setq my-x-frame-pos 100)
        (setq my-y-frame-pos 20)
        (setq my-frame-width 82)
