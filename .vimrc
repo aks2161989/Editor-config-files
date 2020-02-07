@@ -1,7 +1,20 @@
+" Code to autocomplete ( [ < " ' { 
+inoremap ( ()<ESC>i
+inoremap [ []<ESC>i
+inoremap < <><ESC>i
+inoremap " ""<ESC>i
+inoremap ' ''<ESC>i
+inoremap { {}<ESC>i
+"inoremap { {<CR>}<Esc>O<TAB> " Puts a blank line between two curly braces and
+"puts cursor on it in insert mode
+" Autocomplete ( [ < " ' { code ends here
 
 " Allow netrw to remove non-empty local directories
 "
 let g:netrw_localrmdir='rm -r'
+
+" Show line numbers
+set number
 
 " Activates filetype detection
 filetype plugin on
@@ -15,7 +28,7 @@ set linebreak
 syntax on
 
 " Set font used in GVIM
-set guifont=Courier:h15:cANSI:qDRAFT
+set guifont=Consolas:h15:b:cANSI:qDRAFT
 
 set backspace=indent,eol,start
 
