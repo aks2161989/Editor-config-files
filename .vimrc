@@ -9,6 +9,56 @@ inoremap { {}<ESC>i
 "puts cursor on it in insert mode
 " Autocomplete ( [ < " ' { code ends here
 
+" Function to delete closing ( [ < " ' { when an opening tag is deleted
+function! DeleteClosingTag()
+	if @- == '(' && getline(".")[col(".")-1] == ')'
+		call feedkeys("x") " when last character is deleted in visual mode
+	endif
+	if @- == '[' && getline(".")[col(".")-1] == ']'
+		call feedkeys("x") " when last character is deleted in visual mode
+	endif
+	if @- == '<' && getline(".")[col(".")-1] == '>'
+		call feedkeys("x") " when last character is deleted in visual mode
+	endif
+	if @- == '"' && getline(".")[col(".")-1] == '"'
+		call feedkeys("x") " when last character is deleted in visual mode
+	endif
+	if @- == '''' && getline(".")[col(".")-1] == ''''
+		call feedkeys("x") " when last character is deleted in visual mode
+	endif
+	if @- == '{' && getline(".")[col(".")-1] == '}'
+		call feedkeys("x") " when last character is deleted in visual mode
+	endif
+endfunction
+" Function to delete closing tags ends here
+
+" Remap x to do the action of x (delete character) and then call DeleteClosingTag()
+nnoremap x x:call DeleteClosingTag()<CR>
+
+"augroup MyGroup
+""	autocmd!
+""	autocmd textChanged * call DeleteClosingTag()
+""augroup end
+
+" Function to automatically insert comments (on visual selection)
+function! CommentSelection()
+" '< and '> mark begin and end lines of most recent visually selected
+" text.
+" Using those we get text from visual selection and iterate over
+" the lines.
+	let cFamilyTypes = ['c', 'cpp', 'cc', '.cxx', 'cs']
+	let commentString = ""
+	if index(cFamilyTypes, &filetype) != -1
+		let commentString = "//"
+	endif
+	if &filetype == 'vim'
+		let commentString = "\" "
+	endif
+	call feedkeys("0")
+	execute "normal! i" . commentString . "\<ESC>"
+endfunction
+" Function to automatically insert comments ends here
+
 " Allow netrw to remove non-empty local directories
 "
 let g:netrw_localrmdir='rm -r'
