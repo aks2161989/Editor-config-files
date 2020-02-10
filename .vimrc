@@ -41,7 +41,9 @@ nnoremap x x:call DeleteClosingTag()<CR>
 ""augroup end
 
 " Function to automatically toggle comments (on visual selection)
-function! CommentSelection()
+" Uncommenting works ONLY if the comments begin from the first character of
+" the line
+function! ToggleComments()
 	let cFamilyTypes = ['c', 'cpp', 'cc', 'cxx', 'cs', 'java']
 	let commentString = ""
 	let commentChar = ''
@@ -57,51 +59,48 @@ function! CommentSelection()
 
 	" Check if comments exist at the beginning of the current line and
 	" delete them
-" 	call feedkeys("0")
-" 	while getline(".")[col(".")-1] == commentChar || getline(".")[col(".")-1] == ' '  || getline(".")[col(".")-1] == '\t'     
-" 		if getline(".")[col(".")-1] == commentChar
-" 			call feedkeys("x")
-" 			let counter += 1
-" 			continue
-" 		endif
-" 		call feedkeys("l")
-" 	endwhile
-	
-" 	if search(commentString, "ce", line(".")) != 0
-" 		s/commentString/""/g	
-" 		let counter += 1
-" 	endif
-	" Code to check and delete existing comments ends here
-	
-	" If counter was not incremented, the line is uncommented. So add
-	" comments
-	if counter == 0
-		call feedkeys("0")
-		execute "normal! i" . commentString . "\<ESC>"
-		let counter = 0
-	endif
-	" Code to add comments ends here
+	execute "normal! 0"
+	while getline(".")[col(".")-1] == commentChar || getline(".")[col(".")-1] == ' '  || getline(".")[col(".")-1] == '\t'     
+		if getline(".")[col(".")-1] == commentChar
+			execute "normal! x"	
+			let counter += 1
+			continue
+		endif
+		execute "normal! l" 
+	endwhile
+" Code to check and delete existing comments ends here
+
+" If counter was not incremented, the line is uncommented. So add
+" comments
+if counter == 0
+	execute "normal! 0"
+	execute "normal! i" . commentString . "\<ESC>"
+	let counter = 0
+endif
+" Code to add comments ends here
 endfunction
 " Function to automatically toggle comments ends here
 
 " Function to automatically uncomment selected lines (Provided comments begin
 " from the first character of the line)
-function! UncommentSelection()
-	let cFamilyTypes = ['c', 'cpp', 'cc', 'cxx', 'cs', 'java']
-	let numberOfDeletions = 0
-	if index(cFamilyTypes, &filetype) != -1
-		let numberOfDeletions = 2 " C-family languages have 2-character comments
-	endif
-	if &filetype == 'vim'
-		let numberOfDeletions = 1 " Vimscript has 1-character comments
-	endif
-	execute "normal! 0"	
-	let temp = 0
-	while temp < numberOfDeletions
-		execute "normal! x"	
-		let temp += 1
-	endwhile
-endfunction
+" Below function is not needed as ToggleComments() can both, comment and uncomment
+" Hence this function is commented out.
+"function! UncommentSelection()
+"	let cFamilyTypes = ['c', 'cpp', 'cc', 'cxx', 'cs', 'java']
+"	let numberOfDeletions = 0
+"	if index(cFamilyTypes, &filetype) != -1
+"		let numberOfDeletions = 2 " C-family languages have 2-character comments
+"	endif
+"	if &filetype == 'vim'
+"		let numberOfDeletions = 1 " Vimscript has 1-character comments
+"	endif
+"	execute "normal! 0"	
+"	let temp = 0
+"	while temp < numberOfDeletions
+"		execute "normal! x"	
+"		let temp += 1
+"	endwhile
+"endfunction
 " Function to automatically uncomment selected lines ends here
 
 " Allow netrw to remove non-empty local directories
@@ -159,8 +158,8 @@ let g:OmniSharp_server_stdio = 1
 
 " Limit ALE plugin to only use OmniSharp, not other linters
 let g:ale_linters = {
-\ 'cs': ['OmniSharp']
-\}
+			\ 'cs': ['OmniSharp']
+			\}
 
 " Ultisnips-specific settings here
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
