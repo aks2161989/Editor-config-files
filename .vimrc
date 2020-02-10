@@ -40,24 +40,69 @@ nnoremap x x:call DeleteClosingTag()<CR>
 ""	autocmd textChanged * call DeleteClosingTag()
 ""augroup end
 
-" Function to automatically insert comments (on visual selection)
+" Function to automatically toggle comments (on visual selection)
 function! CommentSelection()
-" '< and '> mark begin and end lines of most recent visually selected
-" text.
-" Using those we get text from visual selection and iterate over
-" the lines.
-	let cFamilyTypes = ['c', 'cpp', 'cc', '.cxx', 'cs']
+	let cFamilyTypes = ['c', 'cpp', 'cc', 'cxx', 'cs', 'java']
 	let commentString = ""
+	let commentChar = ''
+	let counter = 0 " Indicates if the line was commented, so don't comment again
 	if index(cFamilyTypes, &filetype) != -1
 		let commentString = "//"
+		let commentChar = '/'
 	endif
 	if &filetype == 'vim'
-		let commentString = "\" "
+		let commentString = "\""
+		let commentChar = '"'
 	endif
-	call feedkeys("0")
-	execute "normal! i" . commentString . "\<ESC>"
+
+	" Check if comments exist at the beginning of the current line and
+	" delete them
+" 	call feedkeys("0")
+" 	while getline(".")[col(".")-1] == commentChar || getline(".")[col(".")-1] == ' '  || getline(".")[col(".")-1] == '\t'     
+" 		if getline(".")[col(".")-1] == commentChar
+" 			call feedkeys("x")
+" 			let counter += 1
+" 			continue
+" 		endif
+" 		call feedkeys("l")
+" 	endwhile
+	
+" 	if search(commentString, "ce", line(".")) != 0
+" 		s/commentString/""/g	
+" 		let counter += 1
+" 	endif
+	" Code to check and delete existing comments ends here
+	
+	" If counter was not incremented, the line is uncommented. So add
+	" comments
+	if counter == 0
+		call feedkeys("0")
+		execute "normal! i" . commentString . "\<ESC>"
+		let counter = 0
+	endif
+	" Code to add comments ends here
 endfunction
-" Function to automatically insert comments ends here
+" Function to automatically toggle comments ends here
+
+" Function to automatically uncomment selected lines (Provided comments begin
+" from the first character of the line)
+function! UncommentSelection()
+	let cFamilyTypes = ['c', 'cpp', 'cc', 'cxx', 'cs', 'java']
+	let numberOfDeletions = 0
+	if index(cFamilyTypes, &filetype) != -1
+		let numberOfDeletions = 2 " C-family languages have 2-character comments
+	endif
+	if &filetype == 'vim'
+		let numberOfDeletions = 1 " Vimscript has 1-character comments
+	endif
+	execute "normal! 0"	
+	let temp = 0
+	while temp < numberOfDeletions
+		execute "normal! x"	
+		let temp += 1
+	endwhile
+endfunction
+" Function to automatically uncomment selected lines ends here
 
 " Allow netrw to remove non-empty local directories
 "
