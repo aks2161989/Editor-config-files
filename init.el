@@ -34,7 +34,50 @@
 ;; Setting up spell-check code ends here
 
 ;;Open these files on startup
-;; (find-file "f:/MCSD/Programming in CSharp/MCSD Certification Code and Test Questions/06/Chapter6_code/612095c06src")
+;;(find-file "F:/randomStuffEmacs.txt")
+
+;; Open remember-notes by default on startup
+;;(remember-notes)
+
+;; Macro to run remember-notes, then recover-this-file and enter 'yes' at
+;; minibuffer prompt asking if file should be recovered
+(fset 'remember-notes-my-macro
+   [?\M-x ?r ?e ?m ?e ?m ?b ?e ?r ?- ?n ?o ?t ?e ?s return ?\M-x ?r ?e ?c ?o ?v ?e ?r ?- ?t ?h ?i ?s ?- ?f ?i ?l ?e return ?y ?e ?s return])
+;; remember-notes-my-macro macro ends here
+
+;; Bind remember-notes-my-macro to the following key sequence
+(global-set-key (kbd "C-c r n") 'remember-notes-my-macro)
+;; Bind remember-notes-my-macro code ends here
+
+;; Macro to insert a single line of '=' characters
+;; Useful in notes, for separating the next note from the previous one
+;; Works only when in originalPosition 
+(fset 'insert-separator-line-macro
+   [return return ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= ?= return return])
+;; insert-separator-line-macro code ends here
+
+;; Bind insert-separator-line-macro to the following key sequence
+(global-set-key (kbd "C-c i s") 'insert-separator-line-macro)
+;; Bind insert-separator-line-macro code ends here
+
+
+;; Function to check if the buffer switched to is *notes*
+;; If yes, it runs the macro recover-autosave-notes-macro
+;;(defun run-note-tasks ()
+;;  (if (equal (buffer-name)"*notes*")
+;;      (execute-kbd-macro (symbol-function 'recover-autosave-notes-macro))
+;;    )
+;;  )
+
+;; Add the run-note-tasks function to the window-configuration-change-hook
+;; which is activated when the buffer is changed
+;; (add-hook 'after-make-frame-functions 'run-note-tasks)
+
+;; Auto-save after 20 characters are typed, from the default value of 300 characters typed
+;;(setq auto-save-interval 20)
+
+;; Auto-save after 1 second of idle time
+(setq auto-save-timeout 1)
 
 ;; Switch to the 'scratch' buffer on startup, instead of the above directory
 (custom-set-variables
@@ -44,7 +87,8 @@
  ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.50")
  '(initial-buffer-choice t)
- '(package-selected-packages (quote (company omnisharp csharp-mode)))
+ '(package-selected-packages (quote (persistent-scratch company omnisharp csharp-mode)))
+ '(send-mail-function (quote smtpmail-send-it))
  '(speedbar-show-unknown-files t))
 
 
@@ -75,7 +119,7 @@
   (add-to-list
    'package-archives
    ;; '("melpa" . "http://stable.melpa.org/packages/") ; many packages won't show if using stable
-   '("melpa" . "http://melpa.milkbox.net/packages/")
+   '("melpa" . "https://melpa.org/packages/")
    t))
 ;; load package code ends here
 
@@ -111,7 +155,7 @@
 ;; electric-pair-mode code ends here
 
 ;; Declare and define custom variables
-(defcustom my-selected-font "Consolas-14:bold" ;; Select Font Type And Size Here
+(defcustom my-selected-font "Courier New-14" ;; Select Font Type And Size Here ;"Consolas-14:bold";
   "My default font type and size"
   :type 'string)
 (defcustom my-x-frame-pos nil
@@ -291,6 +335,23 @@
 (global-set-key (kbd "C-c m b") 'moveBottom)
 ;; Code to bind moveBottom to the key sequence "C-c m b" ends here
 
+;; A function to restore the default startup font type & size, frame position & 
+;; ...size that is chosen by Emacs by default (without any user customization) 
+;; This function differs from (originalPosition) in that the latter...
+;; ... restores the initial size/font I have set in init.el and not Emacs defaults
+(defun defaultPosition ()
+  (interactive)
+   (set-frame-font "Courier New-10" t t)
+  (set-frame-position (selected-frame) 130 59)
+  (when window-system (set-frame-size (selected-frame) 84 35))
+  )
+;; Code to restore Emacs to default startup font and frame parameters ends here
+
+;; Code to bind defaultPosition to the key sequences "C-c m d" and "C-c d p"
+(global-set-key (kbd "C-c m d") 'defaultPosition)
+(global-set-key (kbd "C-c d p") 'defaultPosition)
+;; Code to bind defaultPosition to the key sequences "C-c m d" and "C-c d p" ends here
+
 ;; Display total number of lines in Emacs modeline
 (defvar my-mode-line-buffer-line-count nil)
 (make-variable-buffer-local 'my-mode-line-buffer-line-count)
@@ -392,6 +453,16 @@
   )
 ;; Invoke ctags with ‘m-x create-tags’ code ends here
 
+;; Use smtpmail.el to allow Emacs to talk directly to SMTP mail servers
+;; Used for outgoing email
+(setq user-full-name "Akshay M Chavan")
+(setq user-mail-address "akshaychavan20031@gmail.com")
+(setq smtpmail-default-smtp-server "smtp.gmail.com")
+
+(setq send-mail-command 'smtpmail-send-it) ; For mail-mode (Rmail)
+(setq message-send-mail-function 'smtpmail-send-it) ; For message-mode (Gnus)
+;; Code for SMTP ends here
+
 ;; ‘font-lock-mode-hook’ is run after entering a major mode. You can make use of this to add an Imenu index to the menu bar in any mode that supports Imenu:
 (defun try-to-add-imenu ()
   (condition-case nil (imenu-add-to-menubar "MyImenuIndex") (error nil)))
@@ -404,3 +475,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
