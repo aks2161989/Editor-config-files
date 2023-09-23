@@ -7,6 +7,21 @@
 
 ;;(global-linum-mode t) ;This line shows line numbers
 
+;; Below snippet prevents error with M-x run-python https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
+(setq python-shell-completion-native-disabled-interpreters '("python"))
+
+;;Set the location of python interpreter
+(setq python-shell-interpreter "E:/Programs/Python/Python311/python.exe")
+
+;; A macro to execute run-python, switch window to it, then maximize the window
+(fset 'shortcut-run-python-maximize
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([134217848 114 117 110 45 112 121 116 104 111 110 return 24 111 24 49] 0 "%d")) arg)))
+;; Macro code to run python ends here 
+
+;; Bind shortcut-run-python-maximize to the following key sequence
+(global-set-key (kbd "C-c r p") 'shortcut-run-python-maximize)
+;; Bind shortcut-run-python-maximize code ends here
+
 ;; Use 4 spaces for indentation
 (setq tab-width 4)
 
