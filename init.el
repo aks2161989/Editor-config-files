@@ -26,7 +26,7 @@
 (setq tab-width 4)
 
 ;;Prevent welcome screen
-(setq inhibit-startup-screen t)
+;;(setq inhibit-startup-screen t)
 
 ;; By default, the 'scratch' buffer displays the text ";; This buffer is for text that is not saved, and for Lisp evaluation.
 ;; To create a file, visit it with C-x C-f and enter text in its buffer."
@@ -101,7 +101,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ecb-options-version "2.50")
- '(initial-buffer-choice t)
+ ;;'(initial-buffer-choice t)
  '(package-selected-packages (quote (persistent-scratch company omnisharp csharp-mode)))
  '(send-mail-function (quote smtpmail-send-it))
  '(speedbar-show-unknown-files t))
@@ -491,3 +491,5 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; Display Emacs splash screen on startup
+(display-splash-screen)
