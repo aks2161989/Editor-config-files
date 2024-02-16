@@ -3,9 +3,64 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-;;(package-initialize)
+(package-initialize)
 
 ;;(global-linum-mode t) ;This line shows line numbers
+
+;; Automatically load web-mode when opening web-related files
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+
+;; Highlight of columns
+(setq web-mode-enable-current-column-highlight t)
+(setq web-mode-enable-current-element-highlight t)
+
+;;Set the company completion vocabulary to css and html when in web-mode.
+(defun my-web-mode-hook ()
+  (set (make-local-variable 'company-backends) '(company-css company-web-html company-yasnippet company-files))
+  )
+
+;;Turn on Emmet in web-mode
+(add-hook 'web-mode-hook  'emmet-mode)
+
+
+;; Web-mode is able to switch modes into css (style tags) or js (script tags) in an html file. For Emmet to switch between html and css properly in the same document, this hook is added.
+(add-hook 'web-mode-before-auto-complete-hooks
+    '(lambda ()
+     (let ((web-mode-cur-language
+  	    (web-mode-language-at-pos)))
+               (if (string= web-mode-cur-language "php")
+    	   (yas-activate-extra-mode 'php-mode)
+      	 (yas-deactivate-extra-mode 'php-mode))
+               (if (string= web-mode-cur-language "css")
+    	   (setq emmet-use-css-transform t)
+      	   (setq emmet-use-css-transform nil)))))
+
+;; Code to check HTML/CSS syntax errors in Emacs
+(defun flymake-html-init ()
+       (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                          'flymake-create-temp-inplace))
+              (local-file (file-relative-name
+                           temp-file
+                           (file-name-directory buffer-file-name))))
+         (list "tidy" (list local-file))))
+
+(defun flymake-html-load ()
+  (interactive)
+  (when (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
+    (setq flymake-allowed-file-name-masks
+         '(("\\.html\\|\\.ctp\\|\\.ftl\\|\\.jsp\\|\\.php\\|\\.erb\\|\\.rhtml\\|\\.vue" flymake-html-init)))
+    (setq flymake-err-line-patterns
+         ;; only validate missing html tags
+         '(("line \\([0-9]+\\) column \\([0-9]+\\) - \\(Warning\\|Error\\): \\(missing <\/[a-z0-9A-Z]+>.*\\|discarding unexpected.*\\)" nil 1 2 4)))
+    (flymake-mode t)))
+
+(add-hook 'web-mode-hook 'flymake-html-load)
+(add-hook 'html-mode-hook 'flymake-html-load)
+(add-hook 'nxml-mode-hook 'flymake-html-load)
+(add-hook 'php-mode-hook 'flymake-html-load)
 
 ;; Below snippet prevents error with M-x run-python https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
 (setq python-shell-completion-native-disabled-interpreters '("python"))
@@ -92,7 +147,10 @@
 ;;(setq auto-save-interval 20)
 
 ;; Auto-save after 1 second of idle time
-(setq auto-save-timeout 1)
+;; (setq auto-save-timeout 1)
+
+;; Add custom themes directory
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/") 
 
 ;; Switch to the 'scratch' buffer on startup, instead of the above directory
 (custom-set-variables
@@ -100,10 +158,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes nil)
+ '(custom-safe-themes
+   '("99272dde2e4c4ec7e273bd557d9db7f977e2ec3734897664865bd9e5cd7462de" default))
  '(ecb-options-version "2.50")
- ;;'(initial-buffer-choice t)
- '(package-selected-packages (quote (persistent-scratch company omnisharp csharp-mode)))
- '(send-mail-function (quote smtpmail-send-it))
+ '(package-selected-packages
+   '(gh company-web yasnippet projectile lsp-mode js2-mode rhtml-mode web-beautify emmet-mode web-mode persistent-scratch company omnisharp csharp-mode))
+ '(send-mail-function 'smtpmail-send-it)
  '(speedbar-show-unknown-files t))
 
 
@@ -170,7 +231,7 @@
 ;; electric-pair-mode code ends here
 
 ;; Declare and define custom variables
-(defcustom my-selected-font "Courier New-14" ;; Select Font Type And Size Here ;"Consolas-14:bold";
+(defcustom my-selected-font "Courier Prime Code-14" ;; Select Font Type And Size Here ;"Consolas-14:bold";
   "My default font type and size"
   :type 'string)
 (defcustom my-x-frame-pos nil
@@ -239,6 +300,24 @@
        (setq my-frame-height-moveTop 14)
        (setq my-x-frame-pos-moveBottom my-x-frame-pos-moveTop)
        (setq my-y-frame-pos-moveBottom 345)
+       (setq my-frame-width-moveBottom my-frame-width-moveTop)
+       (setq my-frame-height-moveBottom my-frame-height-moveTop))
+
+      ((equal my-selected-font "Courier Prime Code-14")
+       (setq my-x-frame-pos 100)
+       (setq my-y-frame-pos 20)
+       (setq my-frame-width 82)
+       (setq my-frame-height 24)
+       (setq my-x-frame-pos-moveRight 2100)
+       (setq my-y-frame-pos-moveRight 0)
+       (setq my-frame-width-moveRight 48)
+       (setq my-frame-height-moveRight 25)
+       (setq my-x-frame-pos-moveTop 0)
+       (setq my-y-frame-pos-moveTop 0)
+       (setq my-frame-width-moveTop 110)
+       (setq my-frame-height-moveTop 14)
+       (setq my-x-frame-pos-moveBottom my-x-frame-pos-moveTop)
+       (setq my-y-frame-pos-moveBottom 765)
        (setq my-frame-width-moveBottom my-frame-width-moveTop)
        (setq my-frame-height-moveBottom my-frame-height-moveTop))
 
@@ -493,3 +572,4 @@
 
 ;; Display Emacs splash screen on startup
 (display-splash-screen)
+
