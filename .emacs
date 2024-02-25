@@ -7,61 +7,6 @@
 
 ;;(global-linum-mode t) ;This line shows line numbers
 
-;; Automatically load web-mode when opening web-related files
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-
-;; Highlight of columns
-(setq web-mode-enable-current-column-highlight t)
-(setq web-mode-enable-current-element-highlight t)
-
-;;Set the company completion vocabulary to css and html when in web-mode.
-(defun my-web-mode-hook ()
-  (set (make-local-variable 'company-backends) '(company-css company-web-html company-yasnippet company-files))
-  )
-
-;;Turn on Emmet in web-mode
-(add-hook 'web-mode-hook  'emmet-mode)
-
-
-;; Web-mode is able to switch modes into css (style tags) or js (script tags) in an html file. For Emmet to switch between html and css properly in the same document, this hook is added.
-(add-hook 'web-mode-before-auto-complete-hooks
-    '(lambda ()
-     (let ((web-mode-cur-language
-  	    (web-mode-language-at-pos)))
-               (if (string= web-mode-cur-language "php")
-    	   (yas-activate-extra-mode 'php-mode)
-      	 (yas-deactivate-extra-mode 'php-mode))
-               (if (string= web-mode-cur-language "css")
-    	   (setq emmet-use-css-transform t)
-      	   (setq emmet-use-css-transform nil)))))
-
-;; Code to check HTML/CSS syntax errors in Emacs
-(defun flymake-html-init ()
-       (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                          'flymake-create-temp-inplace))
-              (local-file (file-relative-name
-                           temp-file
-                           (file-name-directory buffer-file-name))))
-         (list "tidy" (list local-file))))
-
-(defun flymake-html-load ()
-  (interactive)
-  (when (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
-    (setq flymake-allowed-file-name-masks
-         '(("\\.html\\|\\.ctp\\|\\.ftl\\|\\.jsp\\|\\.php\\|\\.erb\\|\\.rhtml\\|\\.vue" flymake-html-init)))
-    (setq flymake-err-line-patterns
-         ;; only validate missing html tags
-         '(("line \\([0-9]+\\) column \\([0-9]+\\) - \\(Warning\\|Error\\): \\(missing <\/[a-z0-9A-Z]+>.*\\|discarding unexpected.*\\)" nil 1 2 4)))
-    (flymake-mode t)))
-
-(add-hook 'web-mode-hook 'flymake-html-load)
-(add-hook 'html-mode-hook 'flymake-html-load)
-(add-hook 'nxml-mode-hook 'flymake-html-load)
-(add-hook 'php-mode-hook 'flymake-html-load)
-
 ;; Below snippet prevents error with M-x run-python https://emacs.stackexchange.com/questions/30082/your-python-shell-interpreter-doesn-t-seem-to-support-readline
 (setq python-shell-completion-native-disabled-interpreters '("python"))
 
@@ -158,12 +103,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes nil)
+ '(custom-enabled-themes '(xemacs))
  '(custom-safe-themes
    '("99272dde2e4c4ec7e273bd557d9db7f977e2ec3734897664865bd9e5cd7462de" default))
  '(ecb-options-version "2.50")
  '(package-selected-packages
-   '(gh company-web yasnippet projectile lsp-mode js2-mode rhtml-mode web-beautify emmet-mode web-mode persistent-scratch company omnisharp csharp-mode))
+   '(auto-complete web-mode ht f dash gh persistent-scratch omnisharp csharp-mode))
  '(send-mail-function 'smtpmail-send-it)
  '(speedbar-show-unknown-files t))
 
@@ -573,3 +518,34 @@
 ;; Display Emacs splash screen on startup
 (display-splash-screen)
 
+
+;; Code to install/configure packages for web development is below
+;; This is code written by me, not added automatically by packages
+
+;; What is need first:
+;; HTML tag auto-close
+;; HTML tag autocompletion
+;; insertion of HTML snippets 
+
+(ac-config-default)
+(setq web-mode-ac-sources-alist
+  '(("css" . (ac-source-css-property))
+    ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+)
+(add-hook 'web-mode-hook  'my-web-mode-hook)
