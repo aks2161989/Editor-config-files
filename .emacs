@@ -108,7 +108,7 @@
    '("99272dde2e4c4ec7e273bd557d9db7f977e2ec3734897664865bd9e5cd7462de" default))
  '(ecb-options-version "2.50")
  '(package-selected-packages
-   '(auto-complete web-mode ht f dash gh persistent-scratch omnisharp csharp-mode))
+   '(company yasnippet lsp-mode emmet-mode web-mode ht f dash gh persistent-scratch omnisharp csharp-mode))
  '(send-mail-function 'smtpmail-send-it)
  '(speedbar-show-unknown-files t))
 
@@ -527,11 +527,6 @@
 ;; HTML tag autocompletion
 ;; insertion of HTML snippets 
 
-(ac-config-default)
-(setq web-mode-ac-sources-alist
-  '(("css" . (ac-source-css-property))
-    ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
-
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -549,3 +544,11 @@
   (setq web-mode-code-indent-offset 2)
 )
 (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+(require 'emmet-mode)
+(add-hook 'web-mode-hook 'emmet-mode) ;; Auto-start when the  web-mode starts
+
+(add-hook 'emmet-mode-hook (lambda () (setq emmet-indent-after-insert nil)))
+(add-hook 'emmet-mode-hook (lambda () (setq emmet-indentation 2))) ;; indent 2 spaces.
+(require 'lsp-mode)
+(add-hook 'web-mode-hook #'lsp-deferred)
